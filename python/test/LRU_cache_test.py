@@ -13,9 +13,7 @@ class LRUCacheTest(unittest.TestCase):
         cache.set(1,1)
         cache.set(2,2)
         cache.set(3,3)
-        #cache.println()
         cache.set(4,4)
-        #cache.println()
 
         cache.get(4)
         cache.get(3)
@@ -44,7 +42,18 @@ class LRUCacheTest(unittest.TestCase):
     # test routine C
     def test_C(self):
         """Test routine C"""
-        print "start test C +++++++++++++++++"
+        cache = LRUCache(2)
+        cache.set(2,1)
+        cache.set(1,1)
+        cache.set(2,3)
+        cache.set(4,1)
+        self.assertEqual(cache.get(1), -1)
+        self.assertEqual(cache.get(2), 3)
+
+    # test routine D
+    #@unittest.skip("skip test D for now")
+    def test_D(self):
+        """Test routine D"""
         cache = LRUCache(10)
         cache.set(10,13)
         cache.set(3,17)
@@ -87,7 +96,6 @@ class LRUCacheTest(unittest.TestCase):
         cache.set(7,23)
         cache.get(8)
         cache.get(12)
-        #cache.println()
         cache.set(3,27)
         cache.set(2,12)
         cache.get(5)
@@ -95,7 +103,6 @@ class LRUCacheTest(unittest.TestCase):
         cache.set(13,4)
         cache.set(8,18)
         cache.set(1,7)
-        cache.get(6)
         cache.set(9,29)
         cache.set(8,21)
         cache.get(5)
