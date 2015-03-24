@@ -1,5 +1,6 @@
 from exceptions import Exception
 
+#a doubly-linked list class
 class DLinkedNode:
     def __init__(self, key, value):
         self.val = value
@@ -11,9 +12,9 @@ class LRUCache:
 
     # @param capacity, an integer
     def __init__(self, capacity):
-        self.timeseries_head = None
-        self.timeseries_tail = None
-        self.keyval_map = {}
+        self.timeseries_head = None #head of the DLink list
+        self.timeseries_tail = None #tail of the list
+        self.keyval_map = {} #{key->listNode}
         self.cap = capacity
         if capacity <= 0:
             raise Exception("Cache capacity must be greater than 0!")
@@ -22,7 +23,7 @@ class LRUCache:
     def get(self, key):
         if key in self.keyval_map:
             node = self.keyval_map[key]
-            self._setMRU(node)
+            self.move2MRU(node)
             return node.val
         else:
             return -1
@@ -33,7 +34,7 @@ class LRUCache:
     def set(self, key, value):
         if key in self.keyval_map:
             node = self.keyval_map[key]
-            self._setMRU(node)
+            self.move2MRU(node)
             node.val = value
         else:
             node = DLinkedNode(key, value)
@@ -58,16 +59,17 @@ class LRUCache:
                 self.timeseries_tail = node
             self.keyval_map[key] = node
         
-    def _setMRU(self, node):
-        ''' set a node as the most-recently-utilized (MRU) node, by moving it to the tail'''
+    def move2MRU(self, node):
+        ''' move a node to the tail, as the most-recently-utilized (MRU) node'''
         if not node == self.timeseries_tail:
             if node == self.timeseries_head:
                 self.timeseries_head = node.next
             else:
                 #cut the node out of the list
-                temp = node.prev
-                temp.next = node.next
-                temp.next.prev = temp
+                #temp = node.prev
+                #temp.next = node.next
+                #temp.next.prev = temp
+                node.prev.next, node.next.prev = node.next, node.prev
             #append node to the tail of the list
             self.timeseries_tail.next = node
             node.prev = self.timeseries_tail
@@ -75,8 +77,8 @@ class LRUCache:
             self.timeseries_tail = node       
 
     def println(self):
+        '''a helper function for debugging'''
         print "==========printing all============"
-        #print self.keyval_map
         node = self.timeseries_head
         line = ""
         while node:
