@@ -12,7 +12,7 @@ class LRUCache:
 
     # @param capacity, an integer
     def __init__(self, capacity):
-        self.timeseries_head = None #head of the DLink list
+        self.timeseries_head = None #head and tail of the DLink list
         self.timeseries_tail = None #tail of the list
         self.keyval_map = {} #{key->listNode}
         self.cap = capacity
@@ -33,9 +33,8 @@ class LRUCache:
     # @return nothing
     def set(self, key, value):
         if key in self.keyval_map:
-            node = self.keyval_map[key]
-            self.move2MRU(node)
-            node.val = value
+            self.keyval_map[key].val = value
+            self.move2MRU(self.keyval_map[key])
         else:
             node = DLinkedNode(key, value)
             if len(self.keyval_map) >= self.cap:
@@ -46,10 +45,8 @@ class LRUCache:
                     self.timeseries_head, self.timeseries_tail = None, None
                 else:
                     #remove the head node
-                    temp = self.timeseries_head
-                    self.timeseries_head = temp.next
-                    self.timeseries_head.prev = None
-                    temp.next = None
+                    self.timeseries_head = self.timeseries_head.next
+                    self.timeseries_head.prev.next, self.timeseries_head.prev = None, None 
             #append node at tail
             if self.timeseries_tail == None: #if empty cache
                 self.timeseries_head, self.timeseries_tail = node, node
@@ -66,9 +63,6 @@ class LRUCache:
                 self.timeseries_head = node.next
             else:
                 #cut the node out of the list
-                #temp = node.prev
-                #temp.next = node.next
-                #temp.next.prev = temp
                 node.prev.next, node.next.prev = node.next, node.prev
             #append node to the tail of the list
             self.timeseries_tail.next = node
