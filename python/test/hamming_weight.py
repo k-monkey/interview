@@ -11,3 +11,8 @@ class Solution:
             if digit == '1':
                 weight += 1 
         return weight 
+        
+        
+    def hammingWeight(self, n):
+        '''a very pythonic one-liner'''
+        return str(bin(n)).count('1')
