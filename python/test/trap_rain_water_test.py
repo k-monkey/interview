@@ -1,6 +1,6 @@
 import unittest
 
-from trap_rain_water import Solution
+from src.trap_rain_water import Solution
 
 class MyTest(unittest.TestCase):
     def test_A(self):

@@ -1,7 +1,7 @@
 import sys
 import unittest
 
-from hamming_weight import Solution
+from src.hamming_weight import Solution
 
 class HammingWeightTest(unittest.TestCase):
     """test for hamming_weight, also known as Number of 1 bit"""

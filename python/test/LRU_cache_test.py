@@ -1,7 +1,7 @@
 import sys
 import unittest
 
-from LRU_cache import LRUCache
+from src.LRU_cache import LRUCache
 
 class LRUCacheTest(unittest.TestCase):
     """test for LRU_cache"""
