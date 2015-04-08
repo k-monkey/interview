@@ -30,4 +30,28 @@ class Solution:
             if element < elevation:
                 total_water += elevation - element
         return total_water
-                
+
+    # pre-allocating memory could make the solution faster
+    def trap2(self, A):
+        if not A:
+            return 0
+        sizeA = len(A)
+            
+        biggest = -1
+        biggest_from_left = [0] * sizeA
+        for idx,element in enumerate(A):
+            biggest_from_left[idx] = biggest
+            biggest = max(element, biggest)
+        
+        biggest = -1
+        biggest_from_right = [0] * sizeA
+        for idx,element in enumerate(reversed(A)):
+            biggest_from_right[sizeA-idx-1] = biggest
+            biggest = max(element, biggest)
+        
+        total_water = 0
+        for idx,element in enumerate(A):
+            elevation = min(biggest_from_left[idx], biggest_from_right[idx])
+            if element < elevation:
+                total_water += elevation - element
+        return total_water        
