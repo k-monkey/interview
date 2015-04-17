@@ -15,8 +15,12 @@ class Solution:
     # @return an integer as the maximum profit 
     def maxProfit(self, k, prices):
         if (not prices) or (k <= 0):
-            return float("-inf")
-            
+            return 0
+        
+        #simple optimization before engaging into DP 
+        if k >= len(prices)//2:
+            return sum(i-j for i, j in zip(prices[1:], prices[:-1]) if i-j > 0)
+
         #Init two 2D tables hold[I, k], and release[I, k]
         hold = len(prices)*[float("-inf")]
         release = len(prices)*[float("-inf")]        
@@ -40,4 +44,14 @@ class Solution:
                 if release[m] > result:
                     result = release[m]
         return result
+        
+    def maxProfit2(self, k, prices):
+        if k >= len(prices)//2:
+            return sum(i-j for i, j in zip(prices[1:], prices[:-1]) if i-j > 0)
+        hold, release = [float('-inf')]*(k+1), [0]*(k+1)
+        for p in prices:
+            for i in range(1, k+1):
+                release[i] = max(release[i], hold[i]+p)
+                hold[i] = max(hold[i], release[i-1]-p)
+        return release[k]
         
