@@ -38,16 +38,20 @@ class Solution:
             if pattern == None:
                 raise Exception("Invalid matching pattern: " + p)
             if pattern.endswith('*'):
-                if self.isMatch(s, remaining_p):
-                    #account for case of zero occurrence of pattern 
-                    return True 
-                for i in range(len(s)):
-                    if pattern.startswith('.') or pattern[0] == s[i]:
-                        if self.isMatch(s[i+1:], remaining_p):
-                            #one combination (splitting at idx i) matches the strings
-                            #FIXME: we could use Dynamic Programming here.
-                            #to save the pre-computed matching result in an boolean array
-                            return True
+                i = 0
+                while i<=len(s):
+                    if self.isMatch(s[i:], remaining_p):
+                        #look for one of the combinations (splitting at idx i, 
+                        #including i==0), which matches the strings
+                        #FIXME: we could use Dynamic Programming here.
+                        #to save the pre-computed matching result in an boolean array
+                        return True
+                    if i == len(s):
+                        break
+                    elif pattern.startswith('.') or pattern[0] == s[i]:
+                        i += 1
+                    else:
+                        break
                 #all possible combinations failed to match
                 return False
             else:
@@ -56,7 +60,7 @@ class Solution:
                     s = s[1:]
                 else:
                     return False
-        return (s == '') and (remaining_p == '')
+        return (s == '' or s == None) and (remaining_p == '' or remaining_p == None)
     
     def next_pattern(self, p):
         pattern = p[0]
