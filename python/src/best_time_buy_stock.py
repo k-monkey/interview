@@ -18,8 +18,8 @@ class Solution:
             return float("-inf")
             
         #Init two 2D tables hold[I, k], and release[I, k]
-        hold = [len(prices)*[float("-inf")] for i in range(k)]
-        release = [len(prices)*[float("-inf")] for i in range(k)]        
+        hold = len(prices)*[float("-inf")]
+        release = len(prices)*[float("-inf")]        
         
         #construct the DP table.        
         #release[n][m] = prices[m] + Max(hold[n][j]) for all j<m
@@ -27,18 +27,22 @@ class Solution:
         #hold[0][*] = -prices[*], first row of hold[]
         result = 0
         for n in range(k):
+            (max_hold, max_release) = (float("-inf"), float("-inf"))
             for m in range(len(prices)):
+                old_release_m = release[m]
                 if n == 0:
-                    hold[0][m] = -prices[m]
+                    hold[m] = -prices[m]
                 else:
-                    if m == 0:
-                        hold[n][0] = -prices[0]
-                    else:
-                        hold[n][m] = -prices[m] + max(release[n-1][0:m])
+                    #print "r({0},{1}): {2}, {3}".format(n, m, release, max_release)
+                    hold[m] = -prices[m] + max_release
                         
-                if m >= 1:
-                    release[n][m] = prices[m] + max(hold[n][0:m])
-                    if release[n][m] > result:
-                        result = release[n][m]
+                #print "h({0},{1}): {2}, {3}".format(n, m, hold, max_hold)
+                release[m] = prices[m] + max_hold
+                if release[m] > result:
+                    result = release[m]
+                max_hold = max(max_hold, hold[m])
+                max_release = max(max_release, old_release_m)
+            #print "hold({0}): {1}".format(n, hold)
+            #print "release({0}): {1}".format(n, release)        
         return result
         
