@@ -17,9 +17,9 @@ class Solution:
         if (not prices) or (k <= 0):
             return float("-inf")
             
-        #Init two tables hold[I, k], and release[I, k]
-        hold = k*[len(prices)*[float("-inf")]]
-        release = k*[len(prices)*[float("-inf")]]
+        #Init two 2D tables hold[I, k], and release[I, k]
+        hold = [len(prices)*[float("-inf")] for i in range(k)]
+        release = [len(prices)*[float("-inf")] for i in range(k)]        
         
         #construct the DP table.        
         #release[n][m] = prices[m] + Max(hold[n][j]) for all j<m
@@ -40,6 +40,5 @@ class Solution:
                     release[n][m] = prices[m] + max(hold[n][0:m])
                     if release[n][m] > result:
                         result = release[n][m]
-                        print "find best trade: release ({0},{1}) for profit {2}".format(n,m,result)
         return result
         
