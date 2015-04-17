@@ -29,20 +29,15 @@ class Solution:
         for n in range(k):
             (max_hold, max_release) = (float("-inf"), float("-inf"))
             for m in range(len(prices)):
-                old_release_m = release[m]
                 if n == 0:
                     hold[m] = -prices[m]
                 else:
-                    #print "r({0},{1}): {2}, {3}".format(n, m, release, max_release)
                     hold[m] = -prices[m] + max_release
                         
-                #print "h({0},{1}): {2}, {3}".format(n, m, hold, max_hold)
+                max_release = max(max_release, release[m])
                 release[m] = prices[m] + max_hold
+                max_hold = max(max_hold, hold[m])
                 if release[m] > result:
                     result = release[m]
-                max_hold = max(max_hold, hold[m])
-                max_release = max(max_release, old_release_m)
-            #print "hold({0}): {1}".format(n, hold)
-            #print "release({0}): {1}".format(n, release)        
         return result
         
