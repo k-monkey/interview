@@ -1,5 +1,6 @@
-import junit.framework.TestCase;
+package algo;
 
+import junit.framework.TestCase;
 import org.junit.Test;
 
 
