@@ -1,5 +1,6 @@
 package threads.producer_consumer;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -8,6 +9,7 @@ public class RingBuffer {
     private Integer[] buffer;
     private AtomicLong start, end;
     private static int MAX_LOOP_COUNT = 10;
+    private static long MAX_BLOCK_TIME_MILI = 100L;
     private final ReentrantLock lock;
     private final Condition notFull, notEmpty;
     
@@ -27,7 +29,8 @@ public class RingBuffer {
             while (end.longValue() - start.longValue() == buffer.length) {
                 lock.lock();
                 try {
-                    notFull.await();
+                    notFull.await((long) (MAX_BLOCK_TIME_MILI * Math.random()), 
+                            TimeUnit.MILLISECONDS);
                 } finally {
                     lock.unlock();
                 }
@@ -66,7 +69,8 @@ public class RingBuffer {
                 //buffer is empty
                 lock.lock();
                 try {
-                    notEmpty.await();
+                    notEmpty.await((long) (MAX_BLOCK_TIME_MILI * Math.random()), 
+                            TimeUnit.MILLISECONDS);
                 } 
                 finally {
                     lock.unlock();

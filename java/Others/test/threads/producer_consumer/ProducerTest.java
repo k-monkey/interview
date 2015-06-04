@@ -18,7 +18,7 @@ public class ProducerTest {
 
     @Test
     public void testLockFreeVersion01() {
-        runTest2(10, 1, 1);
+        runTest2(1000, 15, 12);
     }
     
     private void runTest2(int capacity, int numConsumers, int numProducers) {
