@@ -9,7 +9,6 @@ public class RingBuffer {
     private Integer[] buffer;
     private AtomicLong start, end;
     private static int MAX_LOOP_COUNT = 10;
-    private static long MAX_BLOCK_TIME_MILI = 100L;
     private final ReentrantLock lock;
     private final Condition notFull, notEmpty;
     
@@ -29,8 +28,10 @@ public class RingBuffer {
             while (end.longValue() - start.longValue() == buffer.length) {
                 lock.lock();
                 try {
-                    notFull.await((long) (MAX_BLOCK_TIME_MILI * Math.random()), 
-                            TimeUnit.MILLISECONDS);
+                    if (end.longValue() - start.longValue() == buffer.length) {
+                        //re-check the condition again, then wait for change.
+                        notFull.await();
+                    }
                 } finally {
                     lock.unlock();
                 }
@@ -65,12 +66,14 @@ public class RingBuffer {
         boolean takeSuccessful = false;
         Integer result = null;
         while (! takeSuccessful) {
-            while ( start.longValue() == end.longValue() ) {
+            while (start.longValue() == end.longValue()) {
                 //buffer is empty
                 lock.lock();
                 try {
-                    notEmpty.await((long) (MAX_BLOCK_TIME_MILI * Math.random()), 
-                            TimeUnit.MILLISECONDS);
+                    if (start.longValue() == end.longValue()) {
+                        //re-check the condition again, then wait for change.
+                        notEmpty.await();
+                    }
                 } 
                 finally {
                     lock.unlock();
