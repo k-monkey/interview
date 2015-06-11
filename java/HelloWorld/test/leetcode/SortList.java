@@ -14,11 +14,11 @@ Trick:
 	  b) using quick sort: how??
 */
 public class SortList extends TestCase {
-	
-/*
+
  * Note that the following solution is in C++!!
  */
 
+	/*
 	class Solution {
 	public:
 	    ListNode *sortList(ListNode *head) {
@@ -83,3 +83,4 @@ public class SortList extends TestCase {
 	    }
 	};
 }
+
