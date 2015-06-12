@@ -1,0 +1,146 @@
+To be successful as a developer at Salesforce.com you’ll need to be good at writing code.  The programming test is the best way we’ve found to assess this.  You can complete the test in the language of your choosing.  You are currently scheduled to take this test 6/11/2015 at 2:00pm PDT.  You are given 2 hours to complete the test, starting from when you click the link below to view the problem.  At the end of this time, please email your code to salesforceprogrammingtest@gmail.com. Please watch the clock and be prepared to wrap up your work at the appropriate time.  IMPORTANT: The programming test is not complete until we have received it.  Solutions that are received late will not be accepted.  You’ll find a description available through the link below – do not click this link until you are ready to start.  
+
+Please read the problem description carefully.  Here’s how your solution will be evaluated, in priority order:
+Does the program have your name included in a comment?
+Does the program compile and execute according to the problem description?
+Is your code scalable (i.e., do you use data structures and algorithms that would allow your program to work under high volume)?
+Is your code maintainable (i.e., object oriented; commented; well formatted and easy to read)?
+Is your code testable? Is it tested?
+
+Your program should take lines of text input (each containing one of five commands: DEPEND, INSTALL, REMOVE, LIST, END); after 
+reading each line you will need to echo the input and possbily output further line(s) of text, as described in the "command 
+list" below.
+
+The primary idea in this program is to keep track of various dependencies;  if, for example, an input line is INSTALL A and 
+you know that A depends on B (from an earlier line like DEPEND A B, perhaps), then -- if B is not yet installed  -- B must be 
+installed before installing A. (see descriptions in the "command list" for further details.)
+
+Note that when removing an item, the items on which that item depends should also be removed if and only if nothing else depends
+on them and those items were not explicitly installed -- e.g., if B is installed as part of the installation of A (as in the 
+previous paragraph), then once all the items that depend on B are removed, B will be removed.
+
+The input file can be found in the directory as input.txt
+
+COMMAND LIST
+
+the commands below are described in one paragraph each, formatted in four small sections; specially:
+
+a. command syntax
+b. Description of command
+c. Output
+d. Description of output
+
+DEPEND A B [C ...]
+Have A depend on B (and C ...)
+DEPEND A B [C ...]
+Simply repeat the input line
+
+INSTALL A
+Install A and all items on which it depends.
+INSTALL A
+    [...]
+    [Installing B]
+    Installing A | A is already installed
+If A is already installed, simply print A is already installed. Otherwise, if A does not depend on 
+any uninstalled items, Simply print Installing A. Otherwise, print lines to install everything that 
+A still needs (as well as A). Note that those items might also have depedencies, and so on. Also
+note that you need only print the single line of text for each item installed -- you dont really 
+installing anything!
+
+REMOVE A
+Remove A and all items on which it depends if they aren't needed by anything else.
+REMOVE A
+    Removing A | A is still needed | A is not installed
+    [Removing B]
+    [...]
+If A is not installed, simply print A is not installed. Otherwise, if A is still needed by someting, 
+simply print A is still needed. Otherwise, print Removing A and then print lines to remove every 
+other item that was installed because of a dependency on it -- rather than being explicityly installed 
+-- that also no longer has anything dependant upon it. Note that those items might have items on which 
+they depended that then are no longer needed... Also, note that an item that was explicityly installed
+should never be removed as a dependency of some other item.
+
+LIST
+List all installed items.
+LIST
+    [A]
+    [...]
+A list of all installed items, each on its own line. Orders does not matter.
+
+END
+End the input file (this should appear exactly once -- as the last line of the input).
+END
+Simply repeat the input line.
+
+SAMPLE INPUT
+DEPEND TELNET TCPIP NETCARD
+DEPEND TCPIP NETCARD
+DEPEND DNS TCPIP NETCARD
+DEPEND BROWSER TCPIP HTML
+INSTALL NETCARD
+INSTALL TELNET
+INSTALL FOO
+REMOVE NETCARD
+INSTALL BROWSER
+INSTALL DNS
+LIST
+REMOVE TELNET
+REMOVE NETCARD
+REMOVE DNS
+REMOVE NETCARD
+INSTALL NETCARD
+REMOVE TCPIP
+REMOVE ROWSER
+REMOVE TCPIP
+LIST
+END
+
+OUTPUT FOR SAMPLE INPUT
+DEPEND TELNET TCPIP NETCARD
+DEPEND TCPIP NETCARD
+DEPEND DNS TCPIP NETCARD
+DEPEND BROWSER TCPIP HTML
+INSTALL NETCARD
+    Installing NETCARD
+INSTALL TELNET
+    Installing TCPIP
+    Installing TELNET
+INSTALL FOO
+    Installing FOO
+REMOVE NETCARD
+    NETCARD is still needed
+INSTALL BROWSER
+    Installing HTML
+    Installing BROWSER
+INSTALL DNS
+    Installing DNS
+LIST
+    NETCARD
+    TCPIP
+    TELNET
+    FOO
+    HTML
+    BROWSER
+    DNS
+REMOVE TELNET
+    REMOVE TELNET
+REMOVE NETCARD
+    NETCARD is still needed
+REMOVE DNS
+    Removing DNS
+REMOVE NETCARD
+    NETCARD is still needed
+INSTALL NETCARD
+    NETCARD is already installed
+REMOVE TCPIP
+    TCPIP is still needed
+REMOVE BROWSER    
+    Removing BROWSER
+    Removing HTML
+    Removing TCPIP
+REMOVE TCPIP
+    TCPIP is not installed
+LIST
+    NETCARD
+    FOO
+END
