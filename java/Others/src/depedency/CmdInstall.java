@@ -1,18 +1,20 @@
 package depedency;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 public class CmdInstall extends Command {
-
-    public CmdInstall(List<String> input) {
-        super(input);
+    private static final int INDEX_PRIMARY_NODE = 0;
+    
+    public CmdInstall(List<String> input, HashMap<String, GraphNode> dependencyGraph,
+            HashMap<String, GraphNode> installedNodes) {
+        super(input, dependencyGraph, installedNodes);
     }
 
     @Override
     public void perform() {
-            GraphNode node = getNodeByName(inputTokens.get(1)); //get the primary node
-            System.out.println(COMMANDS.INSTALL.toString() + " " + node.getName());
+            GraphNode node = getNodeByName(input.get(INDEX_PRIMARY_NODE));
             recursivelyInstall(node);
     }
 

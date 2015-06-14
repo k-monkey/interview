@@ -1,18 +1,20 @@
 package depedency;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 public class CmdRemove extends Command {
-
-    public CmdRemove(List<String> input) {
-        super(input);
+    private static final int INDEX_PRIMARY_NODE = 0;
+    
+    public CmdRemove(List<String> input, HashMap<String, GraphNode> dependencyGraph,
+            HashMap<String, GraphNode> installedNodes) {
+        super(input, dependencyGraph, installedNodes);
     }
 
     @Override
     public void perform() {
-            GraphNode node = getNodeByName(inputTokens.get(1)); //get the primary node
-            System.out.println(COMMANDS.REMOVE.toString() + " " + node.getName());
+            GraphNode node = getNodeByName(input.get(INDEX_PRIMARY_NODE));
 
             if (! isInstalled(node.getName())) {
                 System.out.println("\t " + node.getName() + " does not exist");

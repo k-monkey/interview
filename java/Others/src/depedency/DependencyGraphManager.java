@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,8 +38,10 @@ public class DependencyGraphManager {
                 if (inputTokens.size() == 0) 
                     continue; //skip empty line
                 
+                System.out.println(line.trim());
                 Command cmd = Command.getCommandByName(inputTokens.get(0), 
-                        inputTokens.subList(1, inputTokens.size()-1));
+                        inputTokens.subList(1, inputTokens.size()), 
+                        dependencyGraph, installedNodes);
                 cmd.perform();
             }
         }
@@ -53,21 +54,6 @@ public class DependencyGraphManager {
         }
         
     }
-
-    private boolean isInstalled(String nodeName) {
-        return this.installedNodes.containsKey(nodeName);
-    }
-
-    private GraphNode getNodeByName(String name) {
-        if (DependencyGraphManager.dependencyGraph.containsKey(name))
-            return DependencyGraphManager.dependencyGraph.get(name);
-        else {
-            GraphNode node = new GraphNode(name);
-            DependencyGraphManager.dependencyGraph.put(name, node);
-            return node;
-        }
-    }
-    
 
     private List<String> validateLine(String line) {
         LinkedList<String> result = new LinkedList<String>();
